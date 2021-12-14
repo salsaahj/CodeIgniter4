@@ -6,7 +6,7 @@ on:
   pull_request:
     branches:
       - 'develop'
-      - '4.*'
+      - 'v4.*'
     paths:
       - 'app/**'
       - 'system/**'
@@ -17,7 +17,7 @@ on:
   push:
     branches:
       - 'develop'
-      - '4.*'
+      - 'v4.*'
     paths:
       - 'app/**'
       - 'system/**'
@@ -33,7 +33,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        php-versions: ['7.4', '8.0']
+        php-versions: ['8.0']
     steps:
       - name: Checkout
         uses: actions/checkout@v2
