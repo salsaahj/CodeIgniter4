@@ -1,0 +1,76 @@
+public function post($id = null)
+{   
+ 
+    $check_login = $this->session->userdata('logged_in');
+    if (!$check_login) {
+        redirect(site_url('account'));
+    }
+ 
+    $userID = $this->session->userdata('id_user');
+ 
+    if ($id == null) { //jika id null maka menampilkan daftar post
+ 
+        $data = [
+            'tugas' => 'tugas3',
+            'title' => 'Daftar post',
+            'post'  =>  $this->mpost->getAllPostFromUser($userID)->result(),
+            'user'  =>  $this->session->userdata('username')
+        ];
+ 
+        //menampilkan alert success
+        if($this->input->get('success') == 1)
+        {
+            $data['success'] = "Success post Telah Ditambahkan";
+        }
+ 
+        //menampilkan alert error
+        if($this->input->get('error') == 1)
+        {
+            $data['error'] = "post Gagal Ditambahkan";
+        }
+ 
+        //menampilkan alert success
+        if($this->input->get('edit_suc') == 1)
+        {
+            $data['success'] = "Success post Telah Diupdate";
+        }
+ 
+        //menampilkan alert error
+        if($this->input->get('edit_err') == 1)
+        {
+            $data['error'] = "post Gagal Diupdate";
+        }
+ 
+        //menampilkan alert success
+        if($this->input->get('del_suc') == 1)
+        {
+            $data['success'] = "Success post Telah Didelete";
+        }
+ 
+        $this->load->view('tugas3/post', $data);
+ 
+    } else { //jika id tidak null maka menampilkan detail post
+ 
+        $post = $this->mpost->getpost($id)->row(); // mengambil data post berdasarkan id
+ 
+        if (!($post->id_user == $userID)) {
+            show_404();
+        }
+ 
+        if ($post) { //jika post ada maka menampilkan detail post
+            $data = [
+                'tugas' => 'tugas3',
+                'title' => $post->judul,
+                'post'  =>  $post,
+                'user'  => $this->session->userdata('username')
+            ];
+ 
+            $this->load->view('tugas3/detail', $data);
+ 
+        } else { //jika post tidak ada maka menampillkan halaman 404
+ 
+            show_404(); // menampilkan halaman 404
+         
+        }
+    }
+}
